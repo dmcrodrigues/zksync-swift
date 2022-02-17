@@ -14,4 +14,6 @@ public struct ChangePubKeyOnchain: ChangePubKeyVariant {
     enum CodingKeys: String, CodingKey {
         case type
     }
+
+    public init() {}
 }

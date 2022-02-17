@@ -19,7 +19,7 @@ public enum SignerError: Error {
     case amountNotPackable
 }
 
-struct Utils {
+public struct Utils {
 
     private static let MaxNumberOfAccounts: Int = 1 << 24
     private static let MaxNumberOfTokens = UInt32.max
@@ -38,18 +38,18 @@ struct Utils {
         return formatter
     }()
 
-    static func nonceToBytes(_ nonce: UInt32) -> Data {
+    public static func nonceToBytes(_ nonce: UInt32) -> Data {
         return nonce.bytesBE()
     }
 
-    static func accountIdToBytes(_ accountId: UInt32) throws -> Data {
+    public static func accountIdToBytes(_ accountId: UInt32) throws -> Data {
         if accountId > Utils.MaxNumberOfAccounts {
             throw SignerError.accountNumberTooLarge
         }
         return accountId.bytesBE()
     }
 
-    static func addressToBytes(_ address: String) throws -> Data {
+    public static func addressToBytes(_ address: String) throws -> Data {
         let addressWithoutPrefix = try removeAddressPrefix(address)
         let addressData = Data(hex: addressWithoutPrefix)
         if addressData.count != 20 {
@@ -58,29 +58,29 @@ struct Utils {
         return addressData
     }
 
-    static func tokenIdToBytes(_ tokenId: UInt32) throws -> Data {
+    public static func tokenIdToBytes(_ tokenId: UInt32) throws -> Data {
         if tokenId >= Utils.MaxNumberOfTokens {
             throw SignerError.tokenIdTooBig
         }
         return tokenId.bytesBE()
     }
 
-    static func amountFullToBytes(_ amount: BigUInt) -> Data {
+    public static func amountFullToBytes(_ amount: BigUInt) -> Data {
         let amountData = BigInt(amount).serialize()
         var data = Data(repeating: 0x00, count: 16 - amountData.count)
         data.append(amountData)
         return data
     }
 
-    static func feeToBytes(_ fee: BigUInt) throws -> Data {
+    public static func feeToBytes(_ fee: BigUInt) throws -> Data {
         return try packFeeChecked(fee)
     }
 
-    static func amountPackedToBytes(_ amount: BigUInt) throws -> Data {
+    public static func amountPackedToBytes(_ amount: BigUInt) throws -> Data {
         return try packAmountChecked(amount)
     }
 
-    static func numberToBytesBE<T: BinaryInteger>(_ number: T, numBytes: Int) -> Data {
+    public static func numberToBytesBE<T: BinaryInteger>(_ number: T, numBytes: Int) -> Data {
         var result = Data(repeating: 0, count: numBytes)
         var numberToPack = number
         for index in (0...(numBytes - 1)).reversed() {
@@ -90,21 +90,21 @@ struct Utils {
         return result
     }
 
-    static func packFeeChecked(_ fee: BigUInt) throws -> Data {
+    public static func packFeeChecked(_ fee: BigUInt) throws -> Data {
         if try closestPackableTransactionFee(fee).description != fee.description {
             throw SignerError.feeNotPackable
         }
         return try packFee(fee)
     }
 
-    static func packAmountChecked(_ amount: BigUInt) throws -> Data {
+    public static func packAmountChecked(_ amount: BigUInt) throws -> Data {
         if try closestPackableTransactionAmount(amount).description != amount.description {
             throw SignerError.amountNotPackable
         }
         return try packAmount(amount)
     }
 
-    static func closestPackableTransactionFee(_ fee: BigUInt) throws -> BigUInt {
+    public static func closestPackableTransactionFee(_ fee: BigUInt) throws -> BigUInt {
         let packedFee = try packFee(fee)
         return try decimalByteArrayToInteger(packedFee,
                                              expBits: FeeExponentBitWidth,
@@ -112,7 +112,7 @@ struct Utils {
                                              expBase: 10)
     }
 
-    static func closestPackableTransactionAmount(_ amount: BigUInt) throws -> BigUInt {
+    public static func closestPackableTransactionAmount(_ amount: BigUInt) throws -> BigUInt {
         let packedAmount = try packAmount(amount)
         return try decimalByteArrayToInteger(packedAmount,
                                              expBits: AmountExponentBitWidth,
@@ -120,21 +120,21 @@ struct Utils {
                                              expBase: 10)
     }
 
-    static func packFee(_ fee: BigUInt) throws -> Data {
+    public static func packFee(_ fee: BigUInt) throws -> Data {
         return reverseBits(try integerToDecimalByteArray(fee,
                                                          expBits: FeeExponentBitWidth,
                                                          mantissaBits: FeeMantissaBitWidth,
                                                          expBase: 10))
     }
 
-    static func packAmount(_ amount: BigUInt) throws -> Data {
+    public static func packAmount(_ amount: BigUInt) throws -> Data {
         return reverseBits(try integerToDecimalByteArray(amount,
                                                          expBits: AmountExponentBitWidth,
                                                          mantissaBits: AmountMantissaBitWidth,
                                                          expBase: 10))
     }
 
-    static func decimalByteArrayToInteger(_ decimalBytes: Data,
+    public static func decimalByteArrayToInteger(_ decimalBytes: Data,
                                           expBits: Int,
                                           mantissaBits: Int,
                                           expBase: Int) throws -> BigUInt {
@@ -164,11 +164,11 @@ struct Utils {
         return exponent * mantissa
     }
 
-    static func reverseBits(_ data: Data) -> Data {
+    public static func reverseBits(_ data: Data) -> Data {
         Data(data.reversed().map { $0.bitReversed })
     }
 
-    static func integerToDecimalByteArray(_ value: BigUInt,
+    public static func integerToDecimalByteArray(_ value: BigUInt,
                                           expBits: Int,
                                           mantissaBits: Int,
                                           expBase: Int) throws -> Data {
@@ -207,11 +207,11 @@ struct Utils {
         return bits
     }
 
-    static func reverseBytes(_ data: Data) -> Data {
+    public static func reverseBytes(_ data: Data) -> Data {
         return Data(data.reversed())
     }
 
-    static func removeAddressPrefix(_ address: String) throws -> String {
+    public static func removeAddressPrefix(_ address: String) throws -> String {
         if address.hasHexPrefix() {
             return address.stripHexPrefix()
         }
@@ -223,11 +223,11 @@ struct Utils {
         throw SignerError.invalidAddress("ETH address must start with '0x' and PubKeyHash must start with 'sync:'")
     }
 
-    static func format(_ value: Decimal) -> String {
+    public static func format(_ value: Decimal) -> String {
         return Utils.Formatter.string(from: value as NSDecimalNumber)!
     }
 
-    static func currentTimeMillis() -> Int64 {
+    public static func currentTimeMillis() -> Int64 {
         var darwinTime: timeval = timeval(tv_sec: 0, tv_usec: 0)
         gettimeofday(&darwinTime, nil)
         return (Int64(darwinTime.tv_sec) * 1000) + Int64(darwinTime.tv_usec / 1000)
