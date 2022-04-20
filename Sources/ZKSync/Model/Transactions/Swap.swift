@@ -20,17 +20,19 @@ public class Swap: ZkSyncTransaction {
     let fee: String
     let feeToken: UInt32
 
-    var signature: Signature?
+    public var signature: Signature?
     var feeInteger: BigUInt { BigUInt(fee)! }
 
-    internal init(submitterId: UInt32,
-                  submitterAddress: String,
-                  nonce: UInt32,
-                  orders: (Order, Order),
-                  amounts: (BigUInt, BigUInt),
-                  fee: String,
-                  feeToken: UInt32,
-                  signature: Signature? = nil) {
+    public init(
+        submitterId: UInt32,
+        submitterAddress: String,
+        nonce: UInt32,
+        orders: (Order, Order),
+        amounts: (BigUInt, BigUInt),
+        fee: String,
+        feeToken: UInt32,
+        signature: Signature? = nil
+    ) {
         self.submitterId = submitterId
         self.submitterAddress = submitterAddress
         self.nonce = nonce

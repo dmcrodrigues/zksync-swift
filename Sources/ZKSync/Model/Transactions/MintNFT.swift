@@ -20,7 +20,7 @@ public class MintNFT: ZkSyncTransaction {
     let feeToken: UInt32
     let nonce: UInt32
 
-    var signature: Signature?
+    public var signature: Signature?
 
     var feeInteger: BigUInt { BigUInt(fee)! }
 

@@ -21,7 +21,7 @@ public class Transfer: ZkSyncTransaction {
     let nonce: UInt32
     let timeRange: TimeRange
 
-    var signature: Signature?
+    public var signature: Signature?
 
     // Ignored when generating JSON
     let tokenId: TokenId?

@@ -8,6 +8,6 @@
 import Foundation
 
 public struct EthOpInfo: Decodable {
-    let executed: Bool
-    let block: BlockInfo
+    public let executed: Bool
+    public let block: BlockInfo
 }

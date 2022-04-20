@@ -12,14 +12,31 @@ public struct NFT: TokenId, Decodable {
 
     public let id: UInt32
     public let symbol: String
-    let creatorId: UInt32
-    let contentHash: String
+    public let creatorId: UInt32
+    public let contentHash: String
+    public let creatorAddress: String
 
-    let creatorAddress: String
+    public let serialId: UInt32
 
-    let serialId: UInt32
+    public let address: String
 
-    let address: String
+    public init(
+        id: UInt32,
+        symbol: String,
+        creatorId: UInt32,
+        contentHash: String,
+        creatorAddress: String,
+        serialId: UInt32,
+        address: String
+    ) {
+        self.id = id
+        self.symbol = symbol
+        self.creatorId = creatorId
+        self.contentHash = contentHash
+        self.creatorAddress = creatorAddress
+        self.serialId = serialId
+        self.address = address
+    }
 
     public func intoDecimal(_ amount: BigUInt) -> Decimal {
         let sourceDecimal = Decimal(string: "\(amount)")!

@@ -8,6 +8,6 @@
 import Foundation
 
 public struct Signature: Encodable {
-    let pubKey: String
-    let signature: String
+    public let pubKey: String
+    public let signature: String
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 public struct BlockInfo: Decodable {
-    let blockNumber: Int
-    let committed: Bool
-    let verified: Bool
+    public let blockNumber: Int
+    public let committed: Bool
+    public let verified: Bool
 }

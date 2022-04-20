@@ -21,7 +21,7 @@ public class Withdraw: ZkSyncTransaction {
     let nonce: UInt32
     let timeRange: TimeRange
 
-    var signature: Signature?
+    public var signature: Signature?
 
     var feeInteger: BigUInt { BigUInt(fee)! }
 

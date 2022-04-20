@@ -8,8 +8,8 @@
 import Foundation
 
 public struct TransactionDetails: Decodable {
-    let executed: Bool
-    let success: Bool?
-    let failReason: String?
-    let block: BlockInfo?
+    public let executed: Bool
+    public let success: Bool?
+    public let failReason: String?
+    public let block: BlockInfo?
 }

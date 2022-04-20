@@ -19,7 +19,7 @@ public struct Order: Encodable {
     let ratio: (BigUInt, BigUInt)
 
     let amount: BigUInt
-    var signature: Signature?
+    public var signature: Signature?
 
     let timeRange: TimeRange
 

@@ -17,6 +17,18 @@ public struct Token: TokenId, Decodable {
     public let symbol: String
     let decimals: Int
 
+    public init(
+        id: UInt32,
+        address: String,
+        symbol: String,
+        decimals: Int
+    ) {
+        self.id = id
+        self.address = address
+        self.symbol = symbol
+        self.decimals = decimals
+    }
+
     public static var ETH: Token {
         return Token(id: 0,
                      address: Token.DefaultAddress,
@@ -29,7 +41,7 @@ public struct Token: TokenId, Decodable {
         return  sourceDecimal / pow(Decimal(10), decimals)
     }
 
-    var isETH: Bool {
+    public var isETH: Bool {
         return (address == Token.DefaultAddress && symbol == "ETH")
     }
 }
